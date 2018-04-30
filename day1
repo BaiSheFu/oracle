@@ -1,6 +1,7 @@
 Oracle sqlplus 操作
 1.格式化操作
 可以根据Oracle 安装目录下的scott.sql进行操作
+
 2.sqlplus常用命令
  -- set linesize xxx // 设置数据输出时行的长度
  -- set pagesize xxx // 设置每页显示记录的长度
@@ -12,3 +13,20 @@ Oracle sqlplus 操作
  -- desc //查看当前用户表结构
  -- host .. //要用本机命令操作时，只要前面加host即可
  -- showuser //显示当前用户
+ 
+3.Oracle 12c 版本开始 有两个容器分别为PDB CDB
+ 同样的原始用户scott,ss 用户只有在PDB中可以查询到
+ 1.以sys登录
+ -- conn sys/change_on_install as sysdba
+ 2.察看现在所在的容器
+ -- show con_name
+ 3.改变容器为PDB
+ -- alter session set container = pdborcl;
+ 4.察看用户
+ // 如果没有打开数据库先打开 -- alter database pdborcl open ;
+ -- select username from dba_users where username = "scott" or username = "ss";
+	
+4.SQL Developer
+ 简单来说就是Oracle的图像化界面
+ 
+ 
