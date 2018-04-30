@@ -1,1 +1,13 @@
-
+Oracle sqlplus 操作
+1.格式化操作
+可以根据Oracle 安装目录下的scott.sql进行操作
+2.sqlplus常用命令
+ -- set linesize xxx // 设置数据输出时行的长度
+ -- set pagesize xxx // 设置每页显示记录的长度
+ -- ed xxxx //应用场景：当要输入的文本过长的时候 1.打开文本文件
+    @xxxx //2.操作文本文件中的sqlplus语句 xxxx 意思为上下同名
+ -- conn 用户名/密码 连接数据库
+ -- conn sys/change_ //以管理员身份登录
+ -- select * from tab; //取得当前用户的全部数据对象
+ -- desc //查看当前用户表结构
+ -- host .. //要用本机命令操作时，只要前面加host即可
