@@ -1,0 +1,17 @@
+Oracle  
+    ---视图
+    ---序列
+    ---rownum伪列
+    ---索引
+1.视图的作用
+   简单来说视图可以将复杂的DML语句写进View中便于程序员操作
+   
+2.视图的创建 
+  Create View xxx as xxx
+  例: 
+  Create View my_view 
+  as 
+  (select * from table)
+
+3.视图需要注意的是如果是单表DML操作是不会出错的，但是对于多表只能进行删除，且在副表中不会删除掉主表的关联值
+
