@@ -3,15 +3,47 @@ Oracle
     ---序列
     ---rownum伪列
     ---索引
+    
+视图
+
 1.视图的作用
-   简单来说视图可以将复杂的DML语句写进View中便于程序员操作
-   
+   简单来说视图可以将复杂的DML语句写进View中便于程序员操作   
 2.视图的创建 
   Create View xxx as xxx
   例: 
   Create View my_view 
   as 
   (select * from table)
-
 3.视图需要注意的是如果是单表DML操作是不会出错的，但是对于多表只能进行删除，且在副表中不会删除掉主表的关联值
 
+序列
+
+1.序列的作用
+  序列的作用和mysql的auto increment 相同也就是自动生成流水号
+2.序列的创建
+	create sequence xxx ;	//创建序列
+	select my_seq.nextval from dual; //获取下一个序列编号
+	select my_seq.currval from dual;	//获取当前序列编号
+	
+	create sequence xxx increment by y ; //表示每个序列编号间隔y
+	
+	create sequence xxx 
+	start with 1
+	increment by 2 
+	maxvalue 10
+	minvalue 1
+	cycle; // 创建一个循环序列 最大值为10 最小值为1 增长值为2 
+	
+	select * from user_sequences; 可以在数据字典中查看所有创建的sequence
+	
+rowid rownum伪列
+
+1.伪列即为不存在表中的栏位 例如rownum sysdate 等
+
+2.rowid使用方法
+	DDL操作时直接加上rowid即可
+	select rowid from xxx.
+	
+	 
+		
+		
