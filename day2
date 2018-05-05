@@ -38,11 +38,26 @@ Oracle
 	
 rowid rownum伪列
 
-1.伪列即为不存在表中的栏位 例如rownum sysdate 等
-
+1.伪列即为不存在表中的栏位 例如rownum rowid sysdate 等
 2.rowid使用方法
 	DDL操作时直接加上rowid即可
 	select rowid from xxx.
+3.面试题 
+	如何删除重复数据
+	1.取出最小的ROWID也就是最旧的数据
+	select xx,yy,zz,min(rowid) from table 
+	group by (xx);
+	2.再删除
+	drop from table 
+	where rowid not in (
+		select xx,yy,zz,min(rowid) from table 
+		group by (xx);
+	) 
+	
+rownum 的操作其实也就是给每一行的数据一个编号 便于分页的操作
+
+
+	
 	
 	 
 		
