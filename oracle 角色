@@ -1,0 +1,13 @@
+oracle 角色(user) 的操作
+
+简介: DCL为SQL中一个重要操作, 角色的创建便于数据库的权限管理
+
+--创建一个角色
+CREATE USER testuser identified by testuser -- 创建一个用户名为testuser密码为testuser的用户
+default tablespace user_space -- 默认的储存空间
+temporary tablespace user_temp -- 默认的储存空间
+quota 30m on user_space -- 分配空间
+quota 20m on users -- 分配空间
+account unlock -- 账号的状态为 未锁定
+password expire --密码过期
+;
