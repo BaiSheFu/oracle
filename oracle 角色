@@ -11,3 +11,23 @@ quota 20m on users -- 分配空间
 account unlock -- 账号的状态为 未锁定
 password expire --密码过期
 ;
+
+SELECT * FROM dba_users; -- 数据字典中查询已经有的所有角色
+
+--定义概要文件
+CREATE profile test_profile LIMIT
+CPU_PER_SESSION 10000   -- 每个会话占用的最长时间cpu 100s
+LOGICAL_READ_PER_SESSION 2000 -- 每个会话最多能读取2000个数据块
+CONNECT_TIME 60 -- 每个session最多能连接60分钟
+IDLE_TIME 30 -- 每个session最大空闲时间30分钟
+SESSION_PER_USER 10 -- 一个用户最多创建10个session
+FAILED_LOGIN_ATTEMPTS 3
+PASSWORD_LOCK_TIME unlimited 
+PASSWORD_LIFE_TIME 60 -- 密码60天后得修改
+PASSWORD_REUSE_TIME 30  -- 旧口令在30天后才能使用
+PASSWAORD_GRACE_TIME 6; -- 口令失效后有6天时间使用旧密码的宽限
+
+SELECT * FROM dba_profiles; -- 数据字典中查看所有的profile
+      --使用profile
+        CREATE USER test IDENTIFIED BY test
+        PROFILE test_profile; -- 创建一个用户 有profile的约束
