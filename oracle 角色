@@ -1,33 +1,80 @@
-oracle 角色(user) 的操作
 
-简介: DCL为SQL中一个重要操作, 角色的创建便于数据库的权限管理
+简介: DCL为SQL中一个重要操作, 使用者的创建便于数据库的权限管理
 
---创建一个角色
-CREATE USER testuser identified by testuser -- 创建一个用户名为testuser密码为testuser的用户
-default tablespace user_space -- 默认的储存空间
-temporary tablespace user_temp -- 默认的储存空间
-quota 30m on user_space -- 分配空间
-quota 20m on users -- 分配空间
-account unlock -- 账号的状态为 未锁定
-password expire --密码过期
-;
+--创建一个使用者
 
-SELECT * FROM dba_users; -- 数据字典中查询已经有的所有角色
+      CREATE USER testuser identified by testuser -- 创建一个用户名为testuser密码为testuser的用户
+      default tablespace user_space -- 默认的储存空间
+      temporary tablespace user_temp -- 默认的储存空间
+      quota 30m on user_space -- 分配空间
+      quota 20m on users -- 分配空间
+      account unlock -- 账号的状态为 未锁定
+      password expire --密码过期
+      ;
+
+      SELECT * FROM dba_users; -- 数据字典中查询已经有的所有角色
 
 --定义概要文件
-CREATE profile test_profile LIMIT
-CPU_PER_SESSION 10000   -- 每个会话占用的最长时间cpu 100s
-LOGICAL_READ_PER_SESSION 2000 -- 每个会话最多能读取2000个数据块
-CONNECT_TIME 60 -- 每个session最多能连接60分钟
-IDLE_TIME 30 -- 每个session最大空闲时间30分钟
-SESSION_PER_USER 10 -- 一个用户最多创建10个session
-FAILED_LOGIN_ATTEMPTS 3
-PASSWORD_LOCK_TIME unlimited 
-PASSWORD_LIFE_TIME 60 -- 密码60天后得修改
-PASSWORD_REUSE_TIME 30  -- 旧口令在30天后才能使用
-PASSWAORD_GRACE_TIME 6; -- 口令失效后有6天时间使用旧密码的宽限
 
-SELECT * FROM dba_profiles; -- 数据字典中查看所有的profile
-      --使用profile
-        CREATE USER test IDENTIFIED BY test
-        PROFILE test_profile; -- 创建一个用户 有profile的约束
+      CREATE profile test_profile LIMIT
+      CPU_PER_SESSION 10000   -- 每个会话占用的最长时间cpu 100s
+      LOGICAL_READ_PER_SESSION 2000 -- 每个会话最多能读取2000个数据块
+      CONNECT_TIME 60 -- 每个session最多能连接60分钟
+      IDLE_TIME 30 -- 每个session最大空闲时间30分钟
+      SESSION_PER_USER 10 -- 一个用户最多创建10个session
+      FAILED_LOGIN_ATTEMPTS 3
+      PASSWORD_LOCK_TIME unlimited 
+      PASSWORD_LIFE_TIME 60 -- 密码60天后得修改
+      PASSWORD_REUSE_TIME 30  -- 旧口令在30天后才能使用
+      PASSWAORD_GRACE_TIME 6; -- 口令失效后有6天时间使用旧密码的宽限
+
+      SELECT * FROM dba_profiles; -- 数据字典中查看所有的profile
+            --使用profile
+              CREATE USER test IDENTIFIED BY test
+              PROFILE test_profile; -- 创建一个用户 有profile的约束
+
+--用户权限管理
+
+      --DCL的操作语言主要是GRANT(授予权限) REVOKE(回收权限)
+      
+      --GRANT CREATE SESSION TO testuser [WITH ADMIN OPTION];  授予testuser创建会话的功能,若添加后一段意思为可以连带授权即可以给子user授权了
+      
+            --同样的权限还有
+                  1.CREATE TABLE
+                  2.CREATE SEQUENCE
+                  3.CREATE VIEW 
+                  
+      -- SELECT * FROM dba_sys_privs; --数据字典中查询用户的特权
+      
+      --REVOKE的语法
+      
+            -- REVOKE CREATE TABLE FROM testuser; -- ！！！注意：收回的权限在子类没有影响
+            
+      --GRANT 跨表查询的权限
+      
+            --GRANT SELECT,INSERT ON testuser INTO xxxx ;
+            
+--角色
+      
+      --角色的目的是让管理者便于对用户的权限管理，完成一个ROLE就能对不同用户进行权限的授予
+      
+      --创建角色
+      
+      CREATE ROLE test_role [IDENTIFIED BY XXXX] ; -- 可以带有密码
+      
+      --数据字典中查看角色
+      
+      SELECT * FROM dba_roles;
+      
+      --授予角色权限
+      
+      GRANT CREATE SESSION , CREATE TABLE TO test_role ;
+      
+      --数据字典中查询角色的特权
+      SELECT * FROM role_sys_privs; 
+      
+      --为使用者授予角色权限
+      GRANT test_role TO test_user;
+            
+            
+            
