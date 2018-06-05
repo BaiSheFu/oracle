@@ -1,0 +1,32 @@
+
+1.RECORD类型 -- 让同类的元素保存在同一张记录表中
+  
+    --声明 
+     DECLARE 
+       TYPE test_type IS RECORD (
+            test1 VARCHAR2
+            test2 NUMBER
+            ....
+       )
+       v_type test_type;
+      BEGIN
+       v_type.test1 = 'ttt'; --赋值
+       v_type.test2 = 1;
+      END;
+      /
+      
+2.序列类型
+  
+  --声明
+  DECLARE 
+    TYPE test_index IS TABLE OF VARCHAR2(50) INDEX BY PLS_INTEGER;
+    v_index test_index;
+  BEGIN 
+    v_index(0) = 'william';  --赋值 索引是不连续的
+    v_index(10) = 'wwww';
+    IF v_index EXISTS(0) THEN --判断索引是否存在
+      (DO SOMETHING)
+    END IF;
+  END;
+  /
+   
