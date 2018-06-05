@@ -46,6 +46,8 @@
                   
       -- SELECT * FROM dba_sys_privs; --数据字典中查询用户的特权
       
+      -- SELECT * FROM session_privs; --查询当前用户下的所有权限
+      
       --REVOKE的语法
       
             -- REVOKE CREATE TABLE FROM testuser; -- ！！！注意：收回的权限在子类没有影响
@@ -76,5 +78,7 @@
       --为使用者授予角色权限
       GRANT test_role TO test_user;
             
-            
+ --预定义角色
+ 
+      --ORACLE 内部有两个已经建制好的角色 CONNECT , RESOUCE;
             
