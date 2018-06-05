@@ -46,7 +46,7 @@
                   
       -- SELECT * FROM dba_sys_privs; --数据字典中查询用户的特权
       
-      -- SELECT * FROM session_privs; --查询当前用户下的所有权限
+      -- SELECT * FROM session_privs; --查询所有的权限
       
       --REVOKE的语法
       
