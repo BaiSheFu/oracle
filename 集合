@@ -29,4 +29,27 @@
     END IF;
   END;
   /
+  
+3.嵌套表
+
+  --新建嵌套表
+  
+  CREATE OR REPLACE TYPE table_test AS TABLE OF VARCHAR2(50);
+  /
+  
+  DROP TABLE department;  
+  
+  CREATE TABLE department (  --创建一张表 
+    did NUMBER,
+    deptName VARCHAR2(50),
+    projects table_test
+  )NESTED TABLE projects STORE AS project_nested_table; -- 定义嵌套表的存储名称
+
+ 
+  INSERT INTO department(did,deptName,projects) VALUES (10,'william',table_test('1号','2号')); -- 插入一条数据
+  
+  SELECT * FROM TABLE (
+    SELECT projects FROM department WHERE did = 10 
+  ) ;  --嵌套表中的多个数据以数据表的形式返回
    
+   UPDATE TABLE (SELECT projects FROM department WHERE did = 10 )pro SET VALUE(pro) = '30' WHERE COLUMN_VALUE = '2号';
