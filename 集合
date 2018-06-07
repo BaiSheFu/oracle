@@ -52,4 +52,49 @@
     SELECT projects FROM department WHERE did = 10 
   ) ;  --嵌套表中的多个数据以数据表的形式返回
    
-   UPDATE TABLE (SELECT projects FROM department WHERE did = 10 )pro SET VALUE(pro) = '30' WHERE COLUMN_VALUE = '2号';
+   UPDATE TABLE (SELECT projects FROM department WHERE did = 10 )pro SET VALUE(pro) = '30' WHERE COLUMN_VALUE = '2号'; --嵌套表的更新
+   
+   
+4.可变数组
+
+ --可变数组是一个固定了长度的嵌套表 存储的是对象
+
+ --新建可变数组
+ 
+ CREATE OR REPLACE TYPE project_array AS VARRAY(3) OF VARCHAR2(50);
+ /
+ 
+ --创建一个嵌套表
+ 
+ CREATE OR REPLCA TYPE project_type AS OBJECT (
+    projectid NUMBER,
+    projectname VARCHAR2(50),
+    projectfunds NUMBER,
+    pubdate DATE
+ )
+ 
+ CREATE OR REPLACE TYPE project_array AS VARRAY(3) OF project_type 
+ /
+ 
+ CREATE TABLE department (
+    did NUMBER,
+    projects project_array
+ )
+ 
+ DECLARE 
+    TYPE project_varray IS VARRAY(2) OF project_type NOT NULL;
+    v_value department%ROWTYPE;
+    v_project project_varray := project_varray(
+      project_type(1, 'William', 200, TO_DATE('2013-02-02',yyyy-mm-dd)),
+      project_type(2, 'Tim', 300, TO_DATE('2013-02-03',yyyy-mm-dd)),
+    );
+    
+ BEGIN 
+    v_value.did = 1;
+    v_value.projects = v_project;
+    INSERT INTO department v_value;
+ END;
+ /
+ 
+
+
