@@ -42,6 +42,7 @@
     WHILE(v_index.EXISTS(v_foot)) LOOP
         DBMS_OUTPUT.put_line('v_index : ' || v_index(v_foot));
         v_foot := v_index.NEXT(v_foot);  --利用NEXT函数读取下一个索引值
+    END LOOP;
   END;
   /
   
