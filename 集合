@@ -34,7 +34,7 @@
   DECLARE 
     TYPE test_index IS TABLE OF VARCHAR2(50) INDEX BY PLS_INTEGER;
     v_index test_index;
-    v_foot NUMEBR;
+    v_foot NUMBER;
   BEGIN 
     v_index(0) := 'william';  --赋值 索引是不连续的
     v_index(10) := 'wwww';
