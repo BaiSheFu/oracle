@@ -10,8 +10,8 @@
        )
        v_type test_type;
       BEGIN
-       v_type.test1 = 'ttt'; --赋值
-       v_type.test2 = 1;
+       v_type.test1 := 'ttt'; --赋值
+       v_type.test2 := 1;
       END;
       /
       
@@ -22,11 +22,26 @@
     TYPE test_index IS TABLE OF VARCHAR2(50) INDEX BY PLS_INTEGER;
     v_index test_index;
   BEGIN 
-    v_index(0) = 'william';  --赋值 索引是不连续的
-    v_index(10) = 'wwww';
+    v_index(0) := 'william';  --赋值 索引是不连续的
+    v_index(10) := 'wwww';
     IF v_index EXISTS(0) THEN --判断索引是否存在
       (DO SOMETHING)
     END IF;
+  END;
+  /
+  
+  --索引表的循环输出
+  DECLARE 
+    TYPE test_index IS TABLE OF VARCHAR2(50) INDEX BY PLS_INTEGER;
+    v_index test_index;
+    v_foot NUMEBR;
+  BEGIN 
+    v_index(0) := 'william';  --赋值 索引是不连续的
+    v_index(10) := 'wwww';
+    v_foot := v_index.FIRST; --找到第一个索引值
+    WHILE(v_index.EXISTS(v_foot)) LOOP
+        DBMS_OUTPUT.put_line('v_index : ' || v_index(v_foot));
+        v_foot := v_index.NEXT(v_foot);  --利用NEXT函数读取下一个索引值
   END;
   /
   
@@ -82,8 +97,53 @@
     projects project_array
  );
  
- 
+5.集合运算符
 
+  1.CARDINALITY -- 集合长度
+  
+  --DEMO
+  
+  DECLARE 
+    TYPE list_nested IS TABLE OF VARCHAR2(50) NOT NULL;
+    v_all list_nested := list_nested('Num 1','Num 2','Num 3','Num 4');
+  BEGIN 
+    DBMS_OUTPUT.put_line('集合长度: '|| CARDINALITY(v_all));  -- 输出4 
+    DBMS_OUTPUT.put_line('集合长度: '|| CARDINALITY(SET(v_all))); --无重复数据的个数
+  END;
+  /
+  
+ 2.IS EMPTY -- 判断集合是否为空
+ 3.A MEMBER OF B --判断集合B是否存在A
+ 4.A MULTISET EXCEPT B -- 生成一个 集合A除去集合B的新集合
+ 5.A MULTISET INTERSECT B -- 生成一个 集合A集合B交集的新集合
+ 6.A MULTISET UNION B -- 生成一个 集合A集合B并集的新集合
+ 7.IS SET -- 判断是否是一个集合
+ 8.A SUBMULTISET B --判断A是否是B的子集合
  
-
+6.FORALL语句
+ 
+ 将所需要的操作一次性交给数据库
+ 
+ --DEMO
+ 
+ DECLARE 
+    TYPE v_array IS VARRAY(8) OF department.did%TYPE;
+    v_deptno v_array := v_array(1,2,3,4);
+ BEGIN 
+    FORALL x IN v_deptno.FIRST .. v_deptno.LAST
+       UPDATE department SET loc = 'BEIJING' WHERE did = v_deptno(x); 
+ END
+ /
+ 
+7.BULK COLLECT 
+ 
+ 批量接收数据
+ 
+ --TYPE dept_nested IS TABLE OF department%ROWTYPE;
+ 
+ --v_dept dept_nested;
+ 
+ --SELECT * BULK COLLECT INTO v_dept;
+ 
+ 
 
