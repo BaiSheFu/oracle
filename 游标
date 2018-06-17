@@ -1,0 +1,89 @@
+游标就是把数据读出来的RESULTSET(结果行,即完整的行集合)放在集合中而后进行逐行操作
+
+游标分为 
+  1.隐式游标
+  2.显示游标
+
+隐式游标
+
+    1.%ROWCOUNT -- 输出DML操作的行数  
+    
+    DECLARE 
+      v_dname dept.dname%TYPE;	
+    BEGIN 
+      SELECT dname INTO v_dname FROM dept WHERE deptno = 10;
+      DBMS_OUTPUT.put_line(SQL%ROWCOUNT);  -- 输出1
+    END;
+    /
+  
+    2.%NOTFOUND  --DML操作没有值返回为TRUE
+    3.%ISOPEN   --判断游标有没有打开,隐式游标默认的是false
+    4.%FOUND
+
+显示游标
+    
+   DECLARE
+      CURSOR cur_emp IS SELECT * FROM emp;   -- 宣告游标操作的TABLE
+      v_empRow 	emp%ROWTYPE; --保存一行记录
+   BEGIN
+      --确保游标已经打开	
+      IF cur_emp%ISOPEN THEN 
+        NULL; -- 什么都不做
+   ELSE
+      OPEN cur_emp;
+      END IF;
+      FETCH cur_emp INTO v_empRow; -- 取得当前行数据
+      CLOSE cur_emp;
+   END;
+   /
+  --默认游标开启在第一行
+      
+      
+   --游标的循环输出
+   
+   
+   DECLARE
+      CURSOR cur_emp IS SELECT * FROM emp;   -- 宣告游标操作的TABLE
+      v_empRow 	emp%ROWTYPE; --保存一行记录
+   BEGIN
+      --确保游标已经打开	
+      IF cur_emp%ISOPEN THEN 
+        NULL; -- 什么都不做
+      ELSE
+        OPEN cur_emp;
+      END IF;
+      FETCH cur_emp INTO v_empRow;  -- 读出第一行的数据到cur_emp中
+      WHILE cur_emp%FOUND LOOP
+        FETCH cur_emp INTO v_empRow; -- 取得当前行数据
+      END LOOP;
+      CLOSE cur_emp;
+   END;
+   /
+  
+  --FOR循环操作游标是最方便的，不需要打开和关闭游标
+  
+  
+  DECLARE
+      CURSOR cur_emp IS SELECT * FROM emp;   -- 宣告游标操作的TABLE
+      v_empRow 	emp%ROWTYPE; --保存一行记录
+   BEGIN
+      FOR v_empRow IN cur_emp LOOP 
+        DBMS_OUTPUT.put_line(v_empRow.empno);
+      END LOOP;
+   END;
+   /
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
