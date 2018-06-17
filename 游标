@@ -73,6 +73,26 @@
    END;
    /
   
+  --套用嵌套表
+  
+  DECLARE
+    TYPE dept_nested IS TABLE OF dept%ROWTYPE;
+    v_dept dept_nested 	; --保存一行记录
+    CURSOR cur_dept IS SELECT * FROM dept;
+
+  BEGIN
+    --确保游标已经打开	
+    IF cur_dept%ISOPEN THEN 
+      NULL; -- 什么都不做
+    ELSE
+      OPEN cur_dept;
+    END IF;
+    FETCH cur_dept BULK COLLECT INTO v_dept;
+    FOR x IN v_dept.FIRST .. v_dept.LAST LOOP
+      DBMS_OUTPUT.put_line(v_dept(x).deptno);  -- 读取嵌套表中的数据
+    END LOOP;
+  END;
+  /
   
   
   
