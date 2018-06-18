@@ -94,6 +94,35 @@
   END;
   /
   
+  --FOR UPDATE NOWAIT 游标事务处理，若事务没有提交会不等待离开
+
+  DECLARE 
+    CURSOR cur_emp IS select * from emp FOR UPDATE NOWAIT;
+    v_emp emp%ROWTYPE;	
+  BEGIN 
+    FOR v_emp IN cur_emp LOOP
+      DBMS_OUTPUT.put_line(v_emp.sal);
+      UPDATE emp SET sal = sal*1.5 WHERE empno = v_emp.empno;
+    END LOOP;
+  END;
+  /
+  
+  --动态游标 
+  
+  DECLARE
+    TYPE dept_cur IS REF CURSOR --定义游标  可以限制返回类型[RETURN dept%ROW]
+    cur_dept dept_cur ;
+    v_deptRow dept%ROWTYPE;
+  BEGIN 
+    OPEN cur_dept FOR SELECT * FROM dept ;
+    LOOP
+      FETCH cur_dept INTO v_deptRow;
+      EXIT WHEN cur_dept%NOTFOUND;
+      DBMS_OUTPUT.put_line(v_deptRow.deptno);
+    END LOOP;
+  END;
+  /
+
   
   
   
