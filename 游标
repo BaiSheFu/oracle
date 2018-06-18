@@ -110,7 +110,7 @@
   --动态游标 
   
   DECLARE
-    TYPE dept_cur IS REF CURSOR --定义游标  可以限制返回类型[RETURN dept%ROW]
+    TYPE dept_cur IS REF CURSOR ;--定义游标  可以限制返回类型[RETURN dept%ROW]
     cur_dept dept_cur ;
     v_deptRow dept%ROWTYPE;
   BEGIN 
