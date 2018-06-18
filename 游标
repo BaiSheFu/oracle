@@ -125,6 +125,7 @@
   /
 
  --ORACLE 自带SYS_REFCURSOR类型
+ 
   DECLARE
     cur_dept SYS_REFCURSOR ;
     v_deptRow dept%ROWTYPE;
