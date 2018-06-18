@@ -120,10 +120,24 @@
       EXIT WHEN cur_dept%NOTFOUND;
       DBMS_OUTPUT.put_line(v_deptRow.deptno);
     END LOOP;
+    CLOSE cur_dept;
   END;
   /
 
-  
+ --ORACLE 自带SYS_REFCURSOR类型
+  DECLARE
+    cur_dept SYS_REFCURSOR ;
+    v_deptRow dept%ROWTYPE;
+  BEGIN 
+    OPEN cur_dept FOR SELECT * FROM dept ;
+    LOOP
+      FETCH cur_dept INTO v_deptRow;
+      EXIT WHEN cur_dept%NOTFOUND;
+      DBMS_OUTPUT.put_line(v_deptRow.deptno);
+    END LOOP;
+    CLOSE cur_dept;
+  END;
+  /
   
   
   
